@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Chrono — World Time</title>
+<title>Kloxa — World Time</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -97,7 +97,7 @@
         letter-spacing: 0;
     }
 
-    /* Section nav — now interactive options */
+    /* Section nav — interactive options */
     .sidebar-nav {
         display: flex;
         flex-direction: column;
@@ -648,7 +648,7 @@
     <!-- ===== SIDEBAR ===== -->
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <span class="title">Chrono<sup>®</sup></span>
+            <span class="title">Kloxa<sup>®</sup></span>
         </div>
 
         <nav class="sidebar-nav" id="sidebarNav">
@@ -890,7 +890,6 @@
 
         els.headerViewTitle.textContent = getViewTitle();
 
-        // Header always shows user's local time
         const localInfo = getTimeInfo(userTz);
         els.headerTime.textContent = localInfo.hour + ":" + localInfo.minute + ":" + localInfo.second;
     }
@@ -974,7 +973,6 @@
 
     function setView(view) {
         currentView = view;
-        // Update nav button states
         const buttons = els.sidebarNav.querySelectorAll(".nav-item");
         for (const btn of buttons) {
             btn.classList.toggle("is-active", btn.dataset.view === view);
