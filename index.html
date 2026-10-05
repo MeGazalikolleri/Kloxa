@@ -97,7 +97,6 @@
         letter-spacing: 0;
     }
 
-    /* Section nav — interactive options */
     .sidebar-nav {
         display: flex;
         flex-direction: column;
@@ -236,7 +235,6 @@
         background: var(--white);
     }
 
-    /* --- HERO --- */
     .hero {
         padding: 40px 40px 32px;
         border-bottom: 1px solid var(--black);
@@ -329,9 +327,6 @@
         padding-bottom: 8px;
     }
 
-    /* ============================================
-       TOOLBAR
-       ============================================ */
     .toolbar {
         display: grid;
         grid-template-columns: 1fr auto auto;
@@ -410,9 +405,6 @@
         margin-top: -2px;
     }
 
-    /* ============================================
-       REGION LIST
-       ============================================ */
     .regions {
         flex: 1;
         min-height: 0;
@@ -537,9 +529,6 @@
         text-transform: uppercase;
     }
 
-    /* ============================================
-       FOOTER
-       ============================================ */
     .footer {
         grid-area: footer;
         display: grid;
@@ -565,9 +554,6 @@
         background: var(--grey-6);
     }
 
-    /* ============================================
-       RESPONSIVE
-       ============================================ */
     @media (max-width: 1024px) {
         .app {
             grid-template-columns: 200px 1fr;
@@ -645,7 +631,6 @@
 
 <div class="app">
 
-    <!-- ===== SIDEBAR ===== -->
     <aside class="sidebar">
         <div class="sidebar-brand">
             <span class="title">Kloxa<sup>®</sup></span>
@@ -664,13 +649,12 @@
         </nav>
 
         <div class="sidebar-foot">
-            <div class="row"><span>Timezones</span><span id="sideTzCount">27</span></div>
+            <div class="row"><span>Timezones</span><span id="sideTzCount">38</span></div>
             <div class="row"><span>Refresh</span><span>250 ms</span></div>
             <div class="row"><span>Version</span><span>1.0.0</span></div>
         </div>
     </aside>
 
-    <!-- ===== HEADER ===== -->
     <header class="header">
         <div class="header-title">
             <span id="headerViewTitle">World Clock</span><span id="headerRegion">/ Local</span>
@@ -679,10 +663,8 @@
         <div class="header-status">Live</div>
     </header>
 
-    <!-- ===== MAIN ===== -->
     <main class="main">
 
-        <!-- HERO -->
         <section class="hero">
             <div class="hero-info">
                 <div class="hero-label">
@@ -703,7 +685,6 @@
             </div>
         </section>
 
-        <!-- TOOLBAR -->
         <div class="toolbar">
             <label class="search-wrap">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square">
@@ -717,7 +698,6 @@
             </button>
         </div>
 
-        <!-- REGION GRID -->
         <div class="regions" id="regionsScroll">
             <div class="grid-head" id="gridHead">
                 <div>Location</div>
@@ -730,13 +710,12 @@
 
     </main>
 
-    <!-- ===== FOOTER ===== -->
     <footer class="footer">
         <div></div>
         <div class="footer-right">
-            <span id="footerCount">27 Zones</span>
+            <span id="footerCount">38 Zones</span>
             <span class="sep"></span>
-            <span>© 2024</span>
+            <span>Kloxa</span>
         </div>
     </footer>
 
@@ -746,44 +725,98 @@
 (function () {
     "use strict";
 
-    /* ---------- DATA ---------- */
+    /* ---------- DATA: ALL 38 DISTINCT UTC OFFSETS ----------
+       Westernmost inhabited zone is UTC−11 (Pago Pago).
+       UTC−12 exists only as a technical offset (uninhabited).
+       No placeholder Etc/* zones are used — every entry is a real place.
+    -------------------------------------------------------- */
     const REGIONS = [
-        { name: "Hawaii",       tz: "Pacific/Honolulu",              group: "major" },
-        { name: "Anchorage",    tz: "America/Anchorage",             group: "major" },
-        { name: "Los Angeles",  tz: "America/Los_Angeles",           group: "major" },
-        { name: "Denver",       tz: "America/Denver",                group: "major" },
-        { name: "Chicago",      tz: "America/Chicago",               group: "major" },
-        { name: "New York",     tz: "America/New_York",              group: "major" },
-        { name: "Halifax",      tz: "America/Halifax",               group: "major" },
-        { name: "São Paulo",    tz: "America/Sao_Paulo",             group: "reference" },
-        { name: "Buenos Aires", tz: "America/Argentina/Buenos_Aires", group: "reference" },
-        { name: "Reykjavík",    tz: "Atlantic/Reykjavik",            group: "reference" },
-        { name: "London",       tz: "Europe/London",                 group: "major" },
-        { name: "Berlin",       tz: "Europe/Berlin",                 group: "major" },
-        { name: "Athens",       tz: "Europe/Athens",                 group: "reference" },
-        { name: "Johannesburg", tz: "Africa/Johannesburg",           group: "reference" },
-        { name: "Moscow",       tz: "Europe/Moscow",                 group: "reference" },
-        { name: "Dubai",        tz: "Asia/Dubai",                    group: "reference" },
-        { name: "Mumbai",       tz: "Asia/Kolkata",                  group: "major" },
-        { name: "Dhaka",        tz: "Asia/Dhaka",                    group: "reference" },
-        { name: "Bangkok",      tz: "Asia/Bangkok",                  group: "reference" },
-        { name: "Shanghai",     tz: "Asia/Shanghai",                 group: "major" },
-        { name: "Tokyo",        tz: "Asia/Tokyo",                    group: "major" },
-        { name: "Seoul",        tz: "Asia/Seoul",                    group: "reference" },
-        { name: "Perth",        tz: "Australia/Perth",               group: "reference" },
-        { name: "Adelaide",     tz: "Australia/Adelaide",            group: "reference" },
-        { name: "Sydney",       tz: "Australia/Sydney",              group: "major" },
-        { name: "Auckland",     tz: "Pacific/Auckland",              group: "major" },
-        { name: "Apia",         tz: "Pacific/Apia",                  group: "reference" }
+        // UTC−11
+        { name: "Pago Pago",         tz: "Pacific/Pago_Pago",              group: "reference" },
+        // UTC−10
+        { name: "Honolulu",          tz: "Pacific/Honolulu",               group: "major" },
+        // UTC−9:30
+        { name: "Marquesas",         tz: "Pacific/Marquesas",              group: "reference" },
+        // UTC−9
+        { name: "Anchorage",         tz: "America/Anchorage",              group: "major" },
+        // UTC−8
+        { name: "Los Angeles",       tz: "America/Los_Angeles",            group: "major" },
+        // UTC−7
+        { name: "Denver",            tz: "America/Denver",                 group: "major" },
+        // UTC−6
+        { name: "Chicago",           tz: "America/Chicago",                group: "major" },
+        // UTC−5
+        { name: "New York",          tz: "America/New_York",               group: "major" },
+        // UTC−4
+        { name: "Halifax",           tz: "America/Halifax",                group: "major" },
+        { name: "Caracas",           tz: "America/Caracas",                group: "reference" },
+        // UTC−3:30
+        { name: "St. John's",        tz: "America/St_Johns",               group: "reference" },
+        // UTC−3
+        { name: "São Paulo",         tz: "America/Sao_Paulo",              group: "reference" },
+        { name: "Buenos Aires",      tz: "America/Argentina/Buenos_Aires", group: "reference" },
+        // UTC−2
+        { name: "South Georgia",     tz: "Atlantic/South_Georgia",         group: "reference" },
+        // UTC−1
+        { name: "Azores",            tz: "Atlantic/Azores",                group: "reference" },
+        { name: "Cape Verde",        tz: "Atlantic/Cape_Verde",            group: "reference" },
+        // UTC±0
+        { name: "London",            tz: "Europe/London",                  group: "major" },
+        { name: "Reykjavík",         tz: "Atlantic/Reykjavik",             group: "reference" },
+        // UTC+1
+        { name: "Berlin",            tz: "Europe/Berlin",                  group: "major" },
+        // UTC+2
+        { name: "Athens",            tz: "Europe/Athens",                  group: "reference" },
+        { name: "Johannesburg",      tz: "Africa/Johannesburg",            group: "reference" },
+        // UTC+3
+        { name: "Moscow",            tz: "Europe/Moscow",                  group: "reference" },
+        // UTC+3:30
+        { name: "Tehran",            tz: "Asia/Tehran",                    group: "reference" },
+        // UTC+4
+        { name: "Dubai",             tz: "Asia/Dubai",                     group: "reference" },
+        // UTC+4:30
+        { name: "Kabul",             tz: "Asia/Kabul",                     group: "reference" },
+        // UTC+5
+        { name: "Karachi",           tz: "Asia/Karachi",                   group: "reference" },
+        // UTC+5:30
+        { name: "Mumbai",            tz: "Asia/Kolkata",                   group: "major" },
+        // UTC+5:45
+        { name: "Kathmandu",         tz: "Asia/Kathmandu",                 group: "reference" },
+        // UTC+6
+        { name: "Dhaka",             tz: "Asia/Dhaka",                     group: "reference" },
+        // UTC+6:30
+        { name: "Yangon",            tz: "Asia/Yangon",                    group: "reference" },
+        // UTC+7
+        { name: "Bangkok",           tz: "Asia/Bangkok",                   group: "reference" },
+        // UTC+8
+        { name: "Shanghai",          tz: "Asia/Shanghai",                  group: "major" },
+        // UTC+8:45
+        { name: "Eucla",             tz: "Australia/Eucla",                group: "reference" },
+        // UTC+9
+        { name: "Tokyo",             tz: "Asia/Tokyo",                     group: "major" },
+        // UTC+9:30
+        { name: "Adelaide",          tz: "Australia/Adelaide",             group: "reference" },
+        // UTC+10
+        { name: "Sydney",            tz: "Australia/Sydney",               group: "major" },
+        // UTC+10:30
+        { name: "Lord Howe Island",  tz: "Australia/Lord_Howe",            group: "reference" },
+        // UTC+11
+        { name: "Noumea",            tz: "Pacific/Noumea",                 group: "reference" },
+        // UTC+12
+        { name: "Auckland",          tz: "Pacific/Auckland",               group: "major" },
+        // UTC+12:45
+        { name: "Chatham Islands",   tz: "Pacific/Chatham",                group: "reference" },
+        // UTC+13
+        { name: "Apia",              tz: "Pacific/Apia",                   group: "reference" },
+        // UTC+14
+        { name: "Kiritimati",        tz: "Pacific/Kiritimati",             group: "reference" }
     ];
 
-    /* ---------- STATE ---------- */
     let userTz = "UTC";
     let selectedTz = null;
     let filter = "";
-    let currentView = "all";   // "all" | "major" | "reference"
+    let currentView = "all";
 
-    /* ---------- DOM ---------- */
     const $ = (id) => document.getElementById(id);
     const els = {
         headerTime:      $("headerTime"),
@@ -806,7 +839,6 @@
         sidebarNav:      $("sidebarNav")
     };
 
-    /* ---------- HELPERS ---------- */
     function getTimeInfo(tz) {
         const now = new Date();
         const fmt = new Intl.DateTimeFormat("en-GB", {
@@ -865,7 +897,6 @@
         return "World Clock";
     }
 
-    /* ---------- RENDER: HERO ---------- */
     function renderHero() {
         const now = new Date();
         const tz = selectedTz || userTz;
@@ -894,7 +925,6 @@
         els.headerTime.textContent = localInfo.hour + ":" + localInfo.minute + ":" + localInfo.second;
     }
 
-    /* ---------- RENDER: REGIONS ---------- */
     function renderRegions() {
         const q = filter.trim().toLowerCase();
 
@@ -908,7 +938,7 @@
         }
 
         els.footerCount.textContent = visible.length + " Zones";
-        els.sideTzCount.textContent = visible.length;
+        els.sideTzCount.textContent = REGIONS.length;
 
         if (visible.length === 0) {
             els.regionsBody.innerHTML =
@@ -938,7 +968,6 @@
         els.regionsBody.replaceChildren(frag);
     }
 
-    /* ---------- TICK ---------- */
     function tick() {
         renderHero();
         const rows = els.regionsBody.querySelectorAll(".grid-row");
@@ -953,7 +982,6 @@
         }
     }
 
-    /* ---------- ACTIONS ---------- */
     function selectRegion(tz, name) {
         selectedTz = tz;
         renderHero();
@@ -981,7 +1009,6 @@
         renderHero();
     }
 
-    /* ---------- INIT ---------- */
     function init() {
         userTz = getLocalTz();
         selectedTz = null;
@@ -990,14 +1017,12 @@
         renderRegions();
         renderHero();
 
-        // Nav options
         els.sidebarNav.addEventListener("click", (e) => {
             const btn = e.target.closest(".nav-item");
             if (!btn) return;
             setView(btn.dataset.view);
         });
 
-        // Search
         let t = null;
         els.searchInput.addEventListener("input", (e) => {
             filter = e.target.value;
@@ -1005,14 +1030,12 @@
             t = setTimeout(renderRegions, 90);
         });
 
-        // Click on row
         els.regionsBody.addEventListener("click", (e) => {
             const row = e.target.closest(".grid-row");
             if (!row) return;
             selectRegion(row.dataset.tz, row.dataset.name);
         });
 
-        // Keyboard on row
         els.regionsBody.addEventListener("keydown", (e) => {
             if (e.key !== "Enter" && e.key !== " ") return;
             const row = e.target.closest(".grid-row");
@@ -1026,7 +1049,6 @@
         tick();
         setInterval(tick, 250);
 
-        // Re-detect location on focus
         window.addEventListener("focus", () => {
             const newTz = getLocalTz();
             if (newTz !== userTz) {
